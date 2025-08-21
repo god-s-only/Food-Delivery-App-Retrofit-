@@ -72,5 +72,6 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:2.56.2")
     implementation("androidx.navigation:navigation-compose:${nav_version}")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
 }
