@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.foodieapp.ui.theme.FoodieAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     var showSplashScreen = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
                 )
                 val zoomY = ObjectAnimator.ofFloat(
                     screen.iconView,
-                    View.SCALE_X,
+                    View.SCALE_Y,
                     0.5f,
                     0f
                 )
