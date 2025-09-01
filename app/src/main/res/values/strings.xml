@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FoodieApp</string>
+    <string name="skip_btn">Skip</string>
+    <string name="welcome">Welcome To</string>
+    <string name="desc">Your favorite foods delivered fast to your door</string>
+    <string name="already">Already have an account? Sign In</string>
 </resources>

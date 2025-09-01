@@ -1,6 +1,6 @@
 package com.example.foodieapp.data
 
-import com.example.foodieapp.common.BASE_URL
+import com.example.foodieapp.common.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +17,7 @@ object AppModule {
     @Singleton
     fun provideFoodAPI(): FoodAPI{
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(FoodAPI::class.java)
