@@ -1,14 +1,24 @@
 package com.example.foodieapp.ui.features.auth
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -19,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,70 +51,137 @@ fun AuthScreen() {
         ),
         startY = imageSize.value.height.toFloat() / 2
     )
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.Black)
-    ){
-        Image(painter = painterResource(id = R.drawable.welcome_background), contentDescription = null,
-            modifier = Modifier
-            .onGloballyPositioned {
-                imageSize.value  = it.size
-            }
-            .alpha(0.6f)
-            .fillMaxSize(),
-        )
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(brush)
-        )
-        Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Color.White), modifier = Modifier
-            .align(Alignment.TopEnd)
-            .padding(8.dp)
-        ) {
-            Text(text = stringResource(id = R.string.skip_btn), color = Orange)
-        }
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 110.dp)
-            .padding(16.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.welcome),
-                color = Color.Black,
-                modifier = Modifier,
-                fontSize = 50.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = Orange,
-                modifier = Modifier,
-                fontSize = 50.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = stringResource(id = R.string.desc),
-                color = Color.DarkGray,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .padding(vertical = 16.dp)
-            )
-        }
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.BottomCenter)
-            .padding(16.dp)) {
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) {
 
-            TextButton(onClick = {}, modifier = Modifier
-                .padding(horizontal = 50.dp)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(it)
+            .background(Color.Black)
+        ){
+            Image(painter = painterResource(id = R.drawable.welcome_background), contentDescription = null,
+                modifier = Modifier
+                    .onGloballyPositioned {
+                        imageSize.value  = it.size
+                    }
+                    .alpha(0.6f)
+                    .fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(brush)
+            )
+            Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Color.White), modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+            ) {
+                Text(text = stringResource(id = R.string.skip_btn), color = Orange)
+            }
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 110.dp)
+                .padding(16.dp)
+            ) {
                 Text(
-                    text = stringResource(id = R.string.already),
-                    color = Color.White
+                    text = stringResource(id = R.string.welcome),
+                    color = Color.Black,
+                    modifier = Modifier,
+                    fontSize = 50.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    color = Orange,
+                    modifier = Modifier,
+                    fontSize = 50.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = stringResource(id = R.string.desc),
+                    color = Color.DarkGray,
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .padding(vertical = 16.dp)
                 )
             }
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Text(
+                    text = stringResource(id = R.string.alt),
+                    color = Color.White
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.height(38.dp)
+                        ){
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_facebook),
+                                contentDescription = null,
+                                Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.size(8.dp))
+                            Text(
+                                text = stringResource(id = R.string.sign_in_with_facebook),
+                                color = Color.Black
+                            )
+                        }
+                    }
+                    Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.height(38.dp)
+                        ){
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_google),
+                                contentDescription = null,
+                                Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.size(8.dp))
+                            Text(
+                                text = stringResource(id = R.string.sign_in_with_google),
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray.copy(alpha = 0.2f)),
+                    shape = RoundedCornerShape(32.dp),
+                    border = BorderStroke(1.dp, color = Color.White.copy(alpha = 0.5f))
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.create_account),
+                        color = Color.White
+                    )
+                }
+
+                TextButton(onClick = {}, modifier = Modifier) {
+                    Text(
+                        text = stringResource(id = R.string.already),
+                        color = Color.White
+                    )
+                }
+            }
         }
+
     }
+
 }
 
 @Preview(showBackground = true)

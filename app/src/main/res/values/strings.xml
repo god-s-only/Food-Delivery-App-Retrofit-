@@ -4,4 +4,9 @@
     <string name="welcome">Welcome To</string>
     <string name="desc">Your favorite foods delivered fast to your door</string>
     <string name="already">Already have an account? Sign In</string>
+    <string name="create_account">Start With Email or Phone</string>
+    <string name="sign_in_with_google">Google</string>
+    <string name="sign_in_with_facebook">Facebook</string>
+    <string name="alt">Sign In</string>
+
 </resources>
