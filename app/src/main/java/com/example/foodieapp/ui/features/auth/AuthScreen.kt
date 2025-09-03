@@ -113,10 +113,20 @@ fun AuthScreen() {
                 .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
-                Text(
-                    text = stringResource(id = R.string.alt),
-                    color = Color.White
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    HorizontalDivider(modifier = Modifier.weight(1f).alpha(0.5f), thickness = 1.dp, color = Color.White)
+                    Text(
+                        text = stringResource(id = R.string.alt),
+                        color = Color.White,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                    HorizontalDivider(modifier = Modifier.weight(1f).alpha(0.5f), thickness = 1.dp, color = Color.White)
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
