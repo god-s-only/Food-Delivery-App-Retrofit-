@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.foodieapp.R
+import com.example.foodieapp.ui.GroupSocialButtons
 import com.example.foodieapp.ui.theme.Orange
 
 @Composable
@@ -113,60 +114,9 @@ fun AuthScreen() {
                 .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
 
-                    HorizontalDivider(modifier = Modifier.weight(1f).alpha(0.5f), thickness = 1.dp, color = Color.White)
-                    Text(
-                        text = stringResource(id = R.string.alt),
-                        color = Color.White,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                    HorizontalDivider(modifier = Modifier.weight(1f).alpha(0.5f), thickness = 1.dp, color = Color.White)
-                }
+                GroupSocialButtons(onFacebookClicked = {}) { }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.height(38.dp)
-                        ){
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_facebook),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.size(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.sign_in_with_facebook),
-                                color = Color.Black
-                            )
-                        }
-                    }
-                    Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.height(38.dp)
-                        ){
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_google),
-                                contentDescription = null,
-                                Modifier.size(24.dp)
-                            )
-                            Spacer(modifier = Modifier.size(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.sign_in_with_google),
-                                color = Color.Black
-                            )
-                        }
-                    }
-                }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {},
