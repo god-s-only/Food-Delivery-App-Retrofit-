@@ -82,6 +82,11 @@ fun SocialButton(
     }
 }
 
+@Composable
+fun AuthTextFields() {
+
+}
+
 @Preview
 @Composable
 private fun DefaultPreview() {
