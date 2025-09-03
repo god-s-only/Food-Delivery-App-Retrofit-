@@ -9,19 +9,27 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.foodieapp.R
+import com.example.foodieapp.ui.theme.Orange
 
 @Composable
 fun GroupSocialButtons(
@@ -83,7 +91,29 @@ fun SocialButton(
 }
 
 @Composable
-fun AuthTextFields() {
+fun AuthTextFields(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = {onValueChange(it)},
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = label, fontWeight = FontWeight.SemiBold) },
+        colors = TextFieldDefaults.colors().copy(
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black,
+            focusedIndicatorColor = Orange.copy(alpha = 0.5f),
+            unfocusedIndicatorColor = Orange.copy(alpha = 0.5f),
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent
+        ),
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon
+    )
 
 }
 

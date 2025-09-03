@@ -21,10 +21,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.foodieapp.R
+import com.example.foodieapp.ui.AuthTextFields
 import com.example.foodieapp.ui.GroupSocialButtons
 import com.example.foodieapp.ui.theme.Orange
 
@@ -51,6 +53,10 @@ fun SignUpScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(modifier = Modifier.weight(1f))
+                AuthTextFields("" ,{}, "Password", visualTransformation = PasswordVisualTransformation()){
+
+                }
+                Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier.height(48.dp)) {
                     Text(
                         text = stringResource(id = R.string.sign_up_btn),
