@@ -101,11 +101,11 @@ fun AuthTextFields(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(10.dp)
     ) {
         Text(
             text = label,
-            color = Color.Black,
+            color = Color.Gray,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(vertical = 4.dp)
         )

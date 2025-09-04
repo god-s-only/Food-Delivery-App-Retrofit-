@@ -17,6 +17,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,21 +32,48 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.foodieapp.R
 import com.example.foodieapp.ui.AuthTextFields
 import com.example.foodieapp.ui.GroupSocialButtons
 import com.example.foodieapp.ui.theme.Orange
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(
+    viewModel: SignUpViewModel = hiltViewModel()
+) {
 
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val errorMessage = remember { mutableStateOf<String?>(null) }
+    val loading = remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = uiState.value) {
+        when(uiState.value){
+            is SignUpViewModel.SignUpEvent.Success -> {
+                loading.value = false
+                errorMessage.value = null
+            }
+
+            SignUpViewModel.SignUpEvent.Error -> {
+                loading.value = false
+                errorMessage.value = "Failed"
+            }
+            SignUpViewModel.SignUpEvent.Loading -> {
+                loading.value = true
+                errorMessage.value = null
+            }
+            else -> {
+
+            }
+        }
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
         Box(
             modifier = Modifier
-            .fillMaxSize()
-            .padding(it)){
+                .fillMaxSize()
+                .padding(it)){
             Image(
                 painter = painterResource(id = R.drawable.ic_auth_background),
                 contentDescription = null,
@@ -54,30 +84,32 @@ fun SignUpScreen() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(modifier = Modifier.weight(1f))
                 Text(
                     text = "Sign Up",
                     fontSize = 32.sp,
+                    color = Color.Black,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(16.dp)
                 )
-                AuthTextFields("" ,{}, "Full Name"){
+                AuthTextFields(viewModel.fullName.value ,{viewModel.onEvent(SignUpScreenEvent.OnFullNameChange(it))}, "Full Name"){
 
                 }
-                AuthTextFields("" ,{}, "E-mail"){
+                AuthTextFields(viewModel.email.value ,{viewModel.onEvent(SignUpScreenEvent.OnEmailChange(it))}, "E-mail"){
 
                 }
-                AuthTextFields("" ,{}, "Password", visualTransformation = PasswordVisualTransformation()){
+                AuthTextFields(viewModel.password.value ,{viewModel.onEvent(SignUpScreenEvent.OnPasswordChange(it))}, "Password", visualTransformation = PasswordVisualTransformation()){
                     Icon(
                         imageVector = Icons.Filled.Check,
                         contentDescription = null
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier.height(48.dp)) {
+                Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier
+                    .height(48.dp)
+                    .align(Alignment.CenterHorizontally)) {
                     Text(
                         text = stringResource(id = R.string.sign_up_btn),
                         modifier = Modifier.padding(horizontal = 32.dp)
@@ -91,7 +123,7 @@ fun SignUpScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .clickable {  },
+                        .clickable { },
                     fontWeight = FontWeight.SemiBold
                 )
                 GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) { }
