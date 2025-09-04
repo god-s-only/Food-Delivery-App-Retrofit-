@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.foodieapp.ui.features.auth.AuthScreen
+import com.example.foodieapp.ui.features.auth.signup.SignUpScreen
 import com.example.foodieapp.ui.theme.FoodieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -64,7 +65,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FoodieAppTheme {
-                AuthScreen()
+                SignUpScreen()
             }
         }
         CoroutineScope(Dispatchers.IO).launch {

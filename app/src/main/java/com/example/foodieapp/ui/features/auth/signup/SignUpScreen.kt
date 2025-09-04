@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +28,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.foodieapp.R
 import com.example.foodieapp.ui.AuthTextFields
 import com.example.foodieapp.ui.GroupSocialButtons
@@ -53,8 +57,24 @@ fun SignUpScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Box(modifier = Modifier.weight(1f))
-                AuthTextFields("" ,{}, "Password", visualTransformation = PasswordVisualTransformation()){
+                Text(
+                    text = "Sign Up",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
+                AuthTextFields("" ,{}, "Full Name"){
 
+                }
+                AuthTextFields("" ,{}, "E-mail"){
+
+                }
+                AuthTextFields("" ,{}, "Password", visualTransformation = PasswordVisualTransformation()){
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = null
+                    )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier.height(48.dp)) {

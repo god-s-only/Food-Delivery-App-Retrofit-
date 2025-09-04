@@ -98,16 +98,27 @@ fun AuthTextFields(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text(
+            text = label,
+            color = Color.Black,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+    }
     OutlinedTextField(
         value = value,
         onValueChange = {onValueChange(it)},
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = label, fontWeight = FontWeight.SemiBold) },
         colors = TextFieldDefaults.colors().copy(
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,
-            focusedIndicatorColor = Orange.copy(alpha = 0.5f),
-            unfocusedIndicatorColor = Orange.copy(alpha = 0.5f),
+            focusedIndicatorColor = Orange.copy(alpha = 0.3f),
+            unfocusedIndicatorColor = Orange.copy(alpha = 0.4f),
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent
         ),
