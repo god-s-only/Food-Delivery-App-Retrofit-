@@ -116,7 +116,7 @@ fun SignUpScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier
+                Button(onClick = {viewModel::onSignUpClick}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier
                     .height(48.dp)
                     .align(Alignment.CenterHorizontally)) {
                     Box{
