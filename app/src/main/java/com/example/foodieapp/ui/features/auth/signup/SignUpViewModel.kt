@@ -2,12 +2,14 @@ package com.example.foodieapp.ui.features.auth.signup
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -39,6 +41,12 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
             is SignUpScreenEvent.OnPasswordChange -> {
                 password.value = event.password
             }
+        }
+    }
+
+    fun onSignUpClick(){
+        viewModelScope.launch {
+
         }
     }
 

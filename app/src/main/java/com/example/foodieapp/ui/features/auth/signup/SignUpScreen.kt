@@ -1,5 +1,12 @@
 package com.example.foodieapp.ui.features.auth.signup
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,10 +16,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -110,10 +119,27 @@ fun SignUpScreen(
                 Button(onClick = {}, colors = ButtonDefaults.buttonColors(containerColor = Orange), modifier = Modifier
                     .height(48.dp)
                     .align(Alignment.CenterHorizontally)) {
-                    Text(
-                        text = stringResource(id = R.string.sign_up_btn),
-                        modifier = Modifier.padding(horizontal = 32.dp)
-                    )
+                    Box{
+                            AnimatedContent(targetState = loading.value, transitionSpec = {
+                                fadeIn(animationSpec = tween(300)) + scaleIn(initialScale = 0.8f) togetherWith
+                                        fadeOut(animationSpec = tween(300)) + scaleOut(targetScale = 0.8f)
+                            }) {target ->
+                                if(target){
+                                    CircularProgressIndicator(
+                                        color = Color.White,
+                                        modifier = Modifier
+                                            .padding(horizontal = 32.dp)
+                                            .size(24.dp)
+                                    )
+                                }else{
+                                    Text(
+                                        text = stringResource(id = R.string.sign_up_btn),
+                                        color = Color.White,
+                                        modifier = Modifier.padding(horizontal = 32.dp)
+                                    )
+                                }
+                            }
+                    }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
