@@ -63,6 +63,7 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                 }
             }catch (e: Exception){
                 _uiState.value = SignUpEvent.Error
+                e.printStackTrace()
             }catch (io: IOException){
                 _uiState.value = SignUpEvent.Error
             }
