@@ -22,6 +22,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.foodieapp.ui.features.auth.AuthScreen
+import com.example.foodieapp.ui.features.auth.signin.SignInScreen
 import com.example.foodieapp.ui.features.auth.signup.SignUpScreen
 import com.example.foodieapp.ui.theme.FoodieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,7 +87,7 @@ class MainActivity : ComponentActivity() {
                         AuthScreen(navController = navController)
                     }
                     composable<Login> {
-
+                        SignInScreen(navController = navController)
                     }
                 }
             }

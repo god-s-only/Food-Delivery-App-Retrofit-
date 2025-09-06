@@ -9,5 +9,6 @@
     <string name="sign_in_with_facebook">Facebook</string>
     <string name="alt">Sign In</string>
     <string name="sign_up_btn">Sign Up</string>
+    <string name="sign_up_redirect">New to the app, register</string>
 
 </resources>

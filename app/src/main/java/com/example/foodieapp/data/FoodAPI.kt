@@ -14,6 +14,6 @@ interface FoodAPI {
     @POST("/auth/signup")
     suspend fun signUp(@Body request: SignUpRequest): AuthResponse
 
-    @POST
+    @POST("/auth/login")
     suspend fun signIn(@Body request: SignInRequest): AuthResponse
 }

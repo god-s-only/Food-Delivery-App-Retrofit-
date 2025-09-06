@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
 import com.example.foodieapp.data.model.SignInRequest
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SignInViewModel @Inject constructor(val foodAPI: FoodAPI): ViewModel() {
+@HiltViewModel
+class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel() {
 
     private val _uiState = MutableStateFlow<SignInEvent>(SignInEvent.Nothing)
     val uiState = _uiState.asStateFlow()
@@ -38,7 +40,7 @@ class SignInViewModel @Inject constructor(val foodAPI: FoodAPI): ViewModel() {
         }
     }
 
-    fun onSignInClicked(){
+    fun onSignInClick(){
         viewModelScope.launch {
             try {
                 _uiState.value = SignInEvent.Loading
@@ -53,6 +55,7 @@ class SignInViewModel @Inject constructor(val foodAPI: FoodAPI): ViewModel() {
                     _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
                 }
             }catch (e: Exception){
+                e.printStackTrace()
                 _uiState.value = SignInEvent.Error
             }
         }
