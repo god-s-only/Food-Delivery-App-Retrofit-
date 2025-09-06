@@ -50,6 +50,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.foodieapp.R
 import com.example.foodieapp.ui.AuthTextFields
 import com.example.foodieapp.ui.GroupSocialButtons
+import com.example.foodieapp.ui.features.navigation.AuthScreen
+import com.example.foodieapp.ui.features.navigation.Home
 import com.example.foodieapp.ui.features.navigation.Login
 import com.example.foodieapp.ui.theme.Orange
 import kotlinx.coroutines.flow.collectLatest
@@ -83,18 +85,19 @@ fun SignUpScreen(
             }
         }
     }
-    val context = LocalContext.current
     LaunchedEffect(true) {
         viewModel.navigationEvent.collectLatest { result ->
             when(result){
                 is SignUpViewModel.SignUpNavigationEvent.NavigationToHome -> {
-                    Toast.makeText(
-                        context,
-                        "Success",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    navController.navigate(Home){
+                        popUpTo(AuthScreen){
+                            inclusive = true
+                        }
+                    }
                 }
-                else -> {}
+                is SignUpViewModel.SignUpNavigationEvent.NavigationToLogin -> {
+                    navController.navigate(Login)
+                }
             }
         }
     }
@@ -172,7 +175,7 @@ fun SignUpScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .clickable { navController.navigate(Login) },
+                        .clickable { viewModel.onLoginClicked() },
                     fontWeight = FontWeight.SemiBold
                 )
                 GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) { }

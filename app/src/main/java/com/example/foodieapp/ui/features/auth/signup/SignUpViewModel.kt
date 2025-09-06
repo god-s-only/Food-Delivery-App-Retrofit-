@@ -46,6 +46,12 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
         }
     }
 
+    fun onLoginClicked(){
+        viewModelScope.launch {
+            _navigationEvent.emit(SignUpNavigationEvent.NavigationToLogin)
+        }
+    }
+
     fun onSignUpClick(){
         viewModelScope.launch {
             try {
