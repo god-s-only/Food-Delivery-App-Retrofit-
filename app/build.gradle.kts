@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -73,5 +74,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:${nav_version}")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.kotlinx.serialization.json)
 
 }

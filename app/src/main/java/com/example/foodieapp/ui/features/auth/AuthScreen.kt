@@ -38,12 +38,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.foodieapp.R
 import com.example.foodieapp.ui.GroupSocialButtons
+import com.example.foodieapp.ui.features.navigation.Login
+import com.example.foodieapp.ui.features.navigation.SignUp
 import com.example.foodieapp.ui.theme.Orange
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(navController: NavController) {
     val imageSize = remember { mutableStateOf(IntSize.Zero) }
     val brush = Brush.verticalGradient(
         colors = listOf(
@@ -119,7 +123,7 @@ fun AuthScreen() {
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = {},
+                    onClick = {navController.navigate(SignUp)},
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Gray.copy(alpha = 0.2f)),
                     shape = RoundedCornerShape(32.dp),
@@ -131,7 +135,7 @@ fun AuthScreen() {
                     )
                 }
 
-                TextButton(onClick = {}, modifier = Modifier) {
+                TextButton(onClick = {navController.navigate(Login)}, modifier = Modifier) {
                     Text(
                         text = stringResource(id = R.string.already),
                         color = Color.White
@@ -147,5 +151,5 @@ fun AuthScreen() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview(){
-    AuthScreen()
+    AuthScreen(rememberNavController())
 }

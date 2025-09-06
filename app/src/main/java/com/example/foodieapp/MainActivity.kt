@@ -18,6 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.foodieapp.ui.features.auth.AuthScreen
 import com.example.foodieapp.ui.features.auth.signup.SignUpScreen
 import com.example.foodieapp.ui.theme.FoodieAppTheme
@@ -26,6 +29,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.example.foodieapp.ui.features.navigation.AuthScreen
+import com.example.foodieapp.ui.features.navigation.SignUp
+import com.example.foodieapp.ui.features.navigation.Login
+import com.example.foodieapp.ui.features.navigation.Home
+
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     var showSplashScreen = true
@@ -65,7 +74,21 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FoodieAppTheme {
-                SignUpScreen()
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = AuthScreen
+                ){
+                    composable<SignUp> {
+                        SignUpScreen(navController = navController)
+                    }
+                    composable<AuthScreen> {
+                        AuthScreen(navController = navController)
+                    }
+                    composable<Login> {
+
+                    }
+                }
             }
         }
         CoroutineScope(Dispatchers.IO).launch {

@@ -45,15 +45,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.foodieapp.R
 import com.example.foodieapp.ui.AuthTextFields
 import com.example.foodieapp.ui.GroupSocialButtons
+import com.example.foodieapp.ui.features.navigation.Login
 import com.example.foodieapp.ui.theme.Orange
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    navController: NavController
 ) {
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -168,7 +172,7 @@ fun SignUpScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .clickable { },
+                        .clickable { navController.navigate(Login) },
                     fontWeight = FontWeight.SemiBold
                 )
                 GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) { }
@@ -181,5 +185,5 @@ fun SignUpScreen(
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-    SignUpScreen()
+    SignUpScreen(navController = rememberNavController())
 }
