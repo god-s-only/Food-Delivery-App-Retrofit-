@@ -129,12 +129,8 @@ fun SignUpScreen(
                     modifier = Modifier
                         .padding(16.dp)
                 )
-                AuthTextFields(viewModel.fullName.value ,{viewModel.onEvent(SignUpScreenEvent.OnFullNameChange(it))}, "Full Name"){
-
-                }
-                AuthTextFields(viewModel.email.value ,{viewModel.onEvent(SignUpScreenEvent.OnEmailChange(it))}, "E-mail"){
-
-                }
+                AuthTextFields(viewModel.fullName.value ,{viewModel.onEvent(SignUpScreenEvent.OnFullNameChange(it))}, "Full Name")
+                AuthTextFields(viewModel.email.value ,{viewModel.onEvent(SignUpScreenEvent.OnEmailChange(it))}, "E-mail")
                 AuthTextFields(viewModel.password.value ,{viewModel.onEvent(SignUpScreenEvent.OnPasswordChange(it))}, "Password", visualTransformation = PasswordVisualTransformation()){
                     Icon(
                         imageVector = Icons.Filled.Check,
