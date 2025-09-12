@@ -47,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.foodieapp.GoogleServiceClientID
 import com.example.foodieapp.R
 import com.example.foodieapp.ui.AuthTextFields
 import com.example.foodieapp.ui.GroupSocialButtons
@@ -54,6 +55,9 @@ import com.example.foodieapp.ui.features.navigation.AuthScreen
 import com.example.foodieapp.ui.features.navigation.Home
 import com.example.foodieapp.ui.features.navigation.Login
 import com.example.foodieapp.ui.theme.Orange
+import com.stevdzasan.onetap.OneTapSignInWithGoogle
+import com.stevdzasan.onetap.getUserFromTokenId
+import com.stevdzasan.onetap.rememberOneTapSignInState
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -61,7 +65,7 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = hiltViewModel(),
     navController: NavController
 ) {
-
+    val state = rememberOneTapSignInState()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val loading = remember { mutableStateOf(false) }
@@ -105,6 +109,17 @@ fun SignUpScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) {
+        OneTapSignInWithGoogle(
+            state = state,
+            clientId = GoogleServiceClientID,
+            onTokenIdReceived = { token ->
+                viewModel.getToken(token)
+            },
+            onDialogDismissed = {
+
+            },
+
+        )
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -174,7 +189,9 @@ fun SignUpScreen(
                         .clickable { viewModel.onLoginClicked() },
                     fontWeight = FontWeight.SemiBold
                 )
-                GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) { }
+                GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) {
+                    state.open()
+                }
             }
         }
     }

@@ -171,7 +171,6 @@ fun SignInScreen(
                     fontWeight = FontWeight.SemiBold
                 )
                 GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) {
-                    viewModel.onGoogleSignInClicked(context)
                 }
             }
         }

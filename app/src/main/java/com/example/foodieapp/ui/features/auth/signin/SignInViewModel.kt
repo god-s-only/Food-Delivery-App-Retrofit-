@@ -66,27 +66,23 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
         }
     }
 
-    fun onGoogleSignInClicked(context: Context){
+    fun getToken(token: String){
         viewModelScope.launch {
-            _uiState.value = SignInEvent.Loading
-            val response = googleAuthUIProvider.signIn(
-                context,
-                CredentialManager.create(context)
-            )
-            if(response != null){
-                val request = OAuthRequest(
-                    token = response.token,
-                    provider = "google"
+            try {
+                val response = foodAPI.oAuth(
+                    OAuthRequest(
+                        token,
+                        "google"
+                    )
                 )
-                val res = foodAPI.oAuth(request)
-                if(res.token.isNotEmpty()){
+                if (response.token.isNotEmpty()) {
                     _uiState.value = SignInEvent.Success
                     _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
-                }else{
+                } else {
                     _uiState.value = SignInEvent.Error
                 }
-
-            }else{
+            }catch (e: Exception){
+                e.printStackTrace()
                 _uiState.value = SignInEvent.Error
             }
         }

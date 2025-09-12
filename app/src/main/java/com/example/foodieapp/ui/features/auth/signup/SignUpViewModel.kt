@@ -4,7 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
+import com.example.foodieapp.data.model.OAuthRequest
 import com.example.foodieapp.data.model.SignUpRequest
+import com.example.foodieapp.ui.features.auth.signin.SignInViewModel.SignInEvent
+import com.example.foodieapp.ui.features.auth.signin.SignInViewModel.SignInNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,6 +77,29 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                 _uiState.value = SignUpEvent.Error
             }
 
+        }
+    }
+
+    fun getToken(token: String){
+        viewModelScope.launch {
+            _uiState.value = SignUpEvent.Loading
+            try {
+                val response = foodAPI.oAuth(
+                    OAuthRequest(
+                        token,
+                        "google"
+                    )
+                )
+                if (response.token.isNotEmpty()) {
+                    _uiState.value = SignUpEvent.Success
+                    _navigationEvent.emit(SignUpNavigationEvent.NavigationToHome)
+                } else {
+                    _uiState.value = SignUpEvent.Error
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+                _uiState.value = SignUpEvent.Error
+            }
         }
     }
 
