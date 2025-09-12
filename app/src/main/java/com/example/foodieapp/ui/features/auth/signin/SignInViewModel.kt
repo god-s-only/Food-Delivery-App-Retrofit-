@@ -1,9 +1,13 @@
 package com.example.foodieapp.ui.features.auth.signin
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
+import androidx.credentials.CredentialManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
+import com.example.foodieapp.data.auth.GoogleAuthUIProvider
+import com.example.foodieapp.data.model.OAuthRequest
 import com.example.foodieapp.data.model.SignInRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel() {
 
+    private val googleAuthUIProvider = GoogleAuthUIProvider()
     private val _uiState = MutableStateFlow<SignInEvent>(SignInEvent.Nothing)
     val uiState = _uiState.asStateFlow()
 
@@ -56,6 +61,32 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                 }
             }catch (e: Exception){
                 e.printStackTrace()
+                _uiState.value = SignInEvent.Error
+            }
+        }
+    }
+
+    fun onGoogleSignInClicked(context: Context){
+        viewModelScope.launch {
+            _uiState.value = SignInEvent.Loading
+            val response = googleAuthUIProvider.signIn(
+                context,
+                CredentialManager.create(context)
+            )
+            if(response != null){
+                val request = OAuthRequest(
+                    token = response.token,
+                    provider = "google"
+                )
+                val res = foodAPI.oAuth(request)
+                if(res.token.isNotEmpty()){
+                    _uiState.value = SignInEvent.Success
+                    _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
+                }else{
+                    _uiState.value = SignInEvent.Error
+                }
+
+            }else{
                 _uiState.value = SignInEvent.Error
             }
         }
