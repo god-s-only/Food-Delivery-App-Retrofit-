@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +62,7 @@ fun SignInScreen(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val errorMessage = remember { mutableStateOf<String?>(null) }
     val loading = remember { mutableStateOf(false) }
+    val context = LocalContext.current
     LaunchedEffect(key1 = uiState.value) {
         when(uiState.value){
             is SignInViewModel.SignInEvent.Success -> {
@@ -168,7 +170,9 @@ fun SignInScreen(
                         .clickable { viewModel.onSignUpClicked() },
                     fontWeight = FontWeight.SemiBold
                 )
-                GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) { }
+                GroupSocialButtons(onFacebookClicked = {}, color = Color.Black) {
+                    viewModel.onGoogleSignInClicked(context)
+                }
             }
         }
     }

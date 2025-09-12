@@ -59,8 +59,8 @@ fun GroupSocialButtons(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            SocialButton(icon = R.drawable.ic_facebook, title = R.string.sign_in_with_facebook) {onFacebookClicked }
-            SocialButton(icon = R.drawable.ic_google, title = R.string.sign_in_with_google) { onGoogleClicked}
+            SocialButton(icon = R.drawable.ic_facebook, title = R.string.sign_in_with_facebook) {onFacebookClicked() }
+            SocialButton(icon = R.drawable.ic_google, title = R.string.sign_in_with_google) { onGoogleClicked()}
         }
     }
 }
@@ -71,7 +71,7 @@ fun SocialButton(
     title:Int,
     onClick:() -> Unit
 ) {
-    Button(onClick = onClick, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
+    Button(onClick = { onClick() }, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.height(38.dp)
