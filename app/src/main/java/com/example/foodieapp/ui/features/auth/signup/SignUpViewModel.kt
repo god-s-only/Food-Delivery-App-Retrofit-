@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
 import com.example.foodieapp.data.model.OAuthRequest
 import com.example.foodieapp.data.model.SignUpRequest
+import com.example.foodieapp.data.remote.APIResponse
+import com.example.foodieapp.data.remote.safeApiCall
 import com.example.foodieapp.ui.features.auth.signin.SignInViewModel.SignInEvent
 import com.example.foodieapp.ui.features.auth.signin.SignInViewModel.SignInNavigationEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,18 +86,25 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
         viewModelScope.launch {
             _uiState.value = SignUpEvent.Loading
             try {
-                val response = foodAPI.oAuth(
+                val response = safeApiCall { foodAPI.oAuth(
                     OAuthRequest(
                         token,
                         "google"
                     )
-                )
-                if (response.token.isNotEmpty()) {
-                    _uiState.value = SignUpEvent.Success
-                    _navigationEvent.emit(SignUpNavigationEvent.NavigationToHome)
-                } else {
-                    _uiState.value = SignUpEvent.Error
+                ) }
+                when(response){
+                    is APIResponse.Success -> {
+                        if (response.data.token.isNotEmpty()) {
+                            _uiState.value = SignUpEvent.Success
+                            _navigationEvent.emit(SignUpNavigationEvent.NavigationToHome)
+                        } else {
+                            _uiState.value = SignUpEvent.Error
+                        }
+                    }else -> {
+                        Unit
+                    }
                 }
+
             }catch (e: Exception){
                 e.printStackTrace()
                 _uiState.value = SignUpEvent.Error

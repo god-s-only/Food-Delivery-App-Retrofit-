@@ -5,6 +5,7 @@ import com.example.foodieapp.data.model.OAuthRequest
 import com.example.foodieapp.data.model.SignInRequest
 import com.example.foodieapp.data.model.SignUpRequest
 import retrofit2.http.Body
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -19,5 +20,5 @@ interface FoodAPI {
     suspend fun signIn(@Body request: SignInRequest): AuthResponse
 
     @POST("/auth/oauth")
-    suspend fun oAuth(@Body request: OAuthRequest): AuthResponse
+    suspend fun oAuth(@Body request: OAuthRequest): Response<AuthResponse>
 }
