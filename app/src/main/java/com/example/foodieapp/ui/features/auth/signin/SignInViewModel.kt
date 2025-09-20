@@ -9,6 +9,8 @@ import com.example.foodieapp.data.FoodAPI
 import com.example.foodieapp.data.auth.GoogleAuthUIProvider
 import com.example.foodieapp.data.model.OAuthRequest
 import com.example.foodieapp.data.model.SignInRequest
+import com.example.foodieapp.data.remote.APIResponse
+import com.example.foodieapp.data.remote.safeApiCall
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel() {
 
-    private val googleAuthUIProvider = GoogleAuthUIProvider()
     private val _uiState = MutableStateFlow<SignInEvent>(SignInEvent.Nothing)
     val uiState = _uiState.asStateFlow()
 
@@ -32,6 +33,9 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
 
     var password = mutableStateOf("")
         private set
+
+    var errorTitle: String = ""
+    var errorDescription: String = ""
 
     fun onEvent(event: SignInScreenEvent){
         when(event){
@@ -55,7 +59,7 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                         password = password.value
                     )
                 )
-                if(response.token.isNotEmpty()){
+                if(response.body()?.token?.isNotEmpty()==true){
                     _uiState.value = SignInEvent.Success
                     _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
                 }
@@ -69,18 +73,33 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
     fun getToken(token: String){
         viewModelScope.launch {
             try {
-                val response = foodAPI.oAuth(
-                    OAuthRequest(
-                        token,
-                        "google"
+                val response = safeApiCall {
+                    foodAPI.oAuth(
+                        OAuthRequest(
+                            token,
+                            "google"
+                        )
                     )
-                )
-                if (response.token.isNotEmpty()) {
-                    _uiState.value = SignInEvent.Success
-                    _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
-                } else {
-                    _uiState.value = SignInEvent.Error
                 }
+                when(response){
+                    is APIResponse.Success -> {
+                        if (response.data.token.isNotEmpty()) {
+                            _uiState.value = SignInEvent.Success
+                            _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
+                        } else {
+                            _uiState.value = SignInEvent.Error
+                        }
+                    }
+                    is APIResponse.Error -> {
+                        _uiState.value = SignInEvent.Error
+                        errorDescription = "Google sign in failed"
+                        errorTitle = response.message
+                    }
+                    else -> {
+                        Unit
+                    }
+                }
+
             }catch (e: Exception){
                 e.printStackTrace()
                 _uiState.value = SignInEvent.Error

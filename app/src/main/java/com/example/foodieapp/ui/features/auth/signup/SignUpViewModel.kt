@@ -37,6 +37,9 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
     var password = mutableStateOf("")
         private set
 
+    var errorTitle: String = ""
+    var errorDescription: String = ""
+
     fun onEvent(event: SignUpScreenEvent){
         when(event){
             is SignUpScreenEvent.OnEmailChange -> {
@@ -68,7 +71,7 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                         password = password.value
                     )
                 )
-                if(response.token.isNotEmpty()){
+                if(response.body()?.token?.isNotEmpty()==true){
                     _uiState.value = SignUpEvent.Success
                     _navigationEvent.emit(SignUpNavigationEvent.NavigationToHome)
                 }
@@ -100,7 +103,11 @@ class SignUpViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                         } else {
                             _uiState.value = SignUpEvent.Error
                         }
-                    }else -> {
+                    }is APIResponse.Error -> {
+                       errorDescription = "Google sign in failed"
+                        errorTitle = response.message
+                    }
+                    else ->{
                         Unit
                     }
                 }
