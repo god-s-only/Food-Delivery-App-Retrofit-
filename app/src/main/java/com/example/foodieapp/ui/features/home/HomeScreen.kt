@@ -24,14 +24,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.foodieapp.data.model.Category
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController,viewModel: HomeViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     Column(modifier = Modifier
-        .fillMaxSize()) {  }
+        .fillMaxSize()) {
+        when(uiState.value){
+            is HomeScreenEvent.Success -> {
+                val categories = viewModel.categories
+                CategoryList(categories = categories) {
+                    navController.navigate("category/${it.id}")
+                }
+            }
+        }
+    }
 }
 
 

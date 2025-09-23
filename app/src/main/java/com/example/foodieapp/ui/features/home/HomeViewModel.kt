@@ -39,6 +39,9 @@ class HomeViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel
                     _uiState.value = HomeScreenEvent.Success
                     categories = response.data.data
                 }
+                is APIResponse.Error -> {
+                    _uiState.value = HomeScreenEvent.Error
+                }
             }
         }
     }
