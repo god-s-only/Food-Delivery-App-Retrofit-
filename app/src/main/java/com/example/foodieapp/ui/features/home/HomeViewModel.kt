@@ -3,6 +3,8 @@ package com.example.foodieapp.ui.features.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
+import com.example.foodieapp.data.model.Category
+import com.example.foodieapp.data.remote.APIResponse
 import com.example.foodieapp.data.remote.safeApiCall
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,6 +22,8 @@ class HomeViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel
     private val _navigationEvent = MutableSharedFlow<HomeScreenNavigationEvent>()
     val navigationEvent = _navigationEvent.asSharedFlow()
 
+    var categories = emptyList<Category>()
+
     init {
         getCategories()
         getPopularRestaurants()
@@ -31,7 +35,10 @@ class HomeViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel
                 foodAPI.getCategories()
             }
             when(response){
-
+                is APIResponse.Success -> {
+                    _uiState.value = HomeScreenEvent.Success
+                    categories = response.data.data
+                }
             }
         }
     }
