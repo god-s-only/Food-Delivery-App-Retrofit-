@@ -16,9 +16,11 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.foodieapp.data.FoodhubSession
 import com.example.foodieapp.ui.features.auth.AuthScreen
 import com.example.foodieapp.ui.features.auth.signin.SignInScreen
 import com.example.foodieapp.ui.features.auth.signup.SignUpScreen
+import com.example.foodieapp.ui.features.home.HomeScreen
 import com.example.foodieapp.ui.theme.FoodieAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -29,11 +31,14 @@ import com.example.foodieapp.ui.features.navigation.AuthScreen
 import com.example.foodieapp.ui.features.navigation.SignUp
 import com.example.foodieapp.ui.features.navigation.Login
 import com.example.foodieapp.ui.features.navigation.Home
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     var showSplashScreen = true
+    @Inject
+    lateinit var session: FoodhubSession
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
             setKeepOnScreenCondition{
@@ -73,7 +78,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = AuthScreen,
+                    startDestination = if(session.getToken() != null) Home else AuthScreen,
                     enterTransition = {
                         slideIntoContainer(
                             towards = AnimatedContentTransitionScope.SlideDirection.Left,
@@ -103,6 +108,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable<Login> {
                         SignInScreen(navController = navController)
+                    }
+                    composable<Home> {
+                        HomeScreen(navController = navController)
                     }
                 }
             }

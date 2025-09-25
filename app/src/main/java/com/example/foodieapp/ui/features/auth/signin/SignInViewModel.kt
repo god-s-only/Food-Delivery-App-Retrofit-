@@ -6,6 +6,7 @@ import androidx.credentials.CredentialManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
+import com.example.foodieapp.data.FoodhubSession
 import com.example.foodieapp.data.auth.GoogleAuthUIProvider
 import com.example.foodieapp.data.model.OAuthRequest
 import com.example.foodieapp.data.model.SignInRequest
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel() {
+class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI, private val session: FoodhubSession): ViewModel() {
 
     private val _uiState = MutableStateFlow<SignInEvent>(SignInEvent.Nothing)
     val uiState = _uiState.asStateFlow()
@@ -60,6 +61,7 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                     )
                 )
                 if(response.body()?.token?.isNotEmpty()==true){
+                    session.storeToken(response.body()?.token!!)
                     _uiState.value = SignInEvent.Success
                     _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
                 }
@@ -84,6 +86,7 @@ class SignInViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewMod
                 when(response){
                     is APIResponse.Success -> {
                         if (response.data.token.isNotEmpty()) {
+                            session.storeToken(response.data.token)
                             _uiState.value = SignInEvent.Success
                             _navigationEvent.emit(SignInNavigationEvent.NavigationToHome)
                         } else {
