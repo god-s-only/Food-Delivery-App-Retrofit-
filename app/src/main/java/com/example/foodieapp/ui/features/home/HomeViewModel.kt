@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodieapp.data.FoodAPI
 import com.example.foodieapp.data.model.Category
+import com.example.foodieapp.data.model.Restaurant
 import com.example.foodieapp.data.remote.APIResponse
 import com.example.foodieapp.data.remote.safeApiCall
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,31 +24,49 @@ class HomeViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     var categories = emptyList<Category>()
+    var restaurants = emptyList<Restaurant>()
 
     init {
-        getCategories()
-        getPopularRestaurants()
-    }
-
-    fun getCategories(){
         viewModelScope.launch {
-            val response = safeApiCall {
-                foodAPI.getCategories()
-            }
-            when(response){
-                is APIResponse.Success -> {
-                    _uiState.value = HomeScreenEvent.Success
-                    categories = response.data.data
-                }
-                is APIResponse.Error -> {
-                    _uiState.value = HomeScreenEvent.Error
-                }
-            }
+            categories = getCategories()
+            restaurants = getPopularRestaurants()
         }
+
     }
 
-    fun getPopularRestaurants(){
+    suspend fun getCategories(): List<Category>{
+        var list = emptyList<Category>()
+        val response = safeApiCall {
+                foodAPI.getCategories()
+        }
+        when(response){
+            is APIResponse.Success -> {
+                _uiState.value = HomeScreenEvent.Success
+                list = response.data.data
+            }
+            is APIResponse.Error -> {
+                _uiState.value = HomeScreenEvent.Error
+            }
 
+            is APIResponse.Exception -> TODO()
+        }
+        return list
+    }
+
+    suspend fun getPopularRestaurants(): List<Restaurant>{
+        var list = emptyList<Restaurant>()
+        val response = safeApiCall { foodAPI.getRestaurants(40.7128, -74.0060) }
+        when(response){
+            is APIResponse.Success -> {
+                _uiState.value = HomeScreenEvent.Success
+                list = response.data.data
+            }
+            is APIResponse.Error -> {
+                _uiState.value = HomeScreenEvent.Error
+            }
+            else -> Unit
+        }
+        return list
     }
 }
 
