@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(private val foodAPI: FoodAPI): ViewModel
 
     init {
         viewModelScope.launch {
+            _uiState.value = HomeScreenEvent.Loading
             categories = getCategories()
             restaurants = getPopularRestaurants()
         }
