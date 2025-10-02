@@ -152,8 +152,8 @@ fun RestaurantList(restaurantList: List<Restaurant>, onRestaurantSelected: (Rest
 @Composable
 fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) -> Unit) {
     Box(modifier = Modifier
-        .width(142.dp)
-        .height(76.dp)
+        .width(226.dp)
+        .height(229.dp)
         .clip(RoundedCornerShape(16.dp))
     ){
         Row(modifier = Modifier
@@ -175,7 +175,13 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                 imageVector = Icons.Filled.Star,
                 contentDescription = null,
                 modifier = Modifier.size(12.dp),
-                colorFilter = ColorFilter.tint(Color.Yellow))
+                colorFilter = ColorFilter.tint(Color.Yellow)
+            )
+            Text(
+                text = "(25)",
+                style = Typography.bodySmall,
+                color = Color.Gray
+            )
         }
         Column(
             modifier = Modifier.fillMaxSize()
@@ -183,7 +189,9 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
             AsyncImage(
                 model = restaurant.imageUrl,
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(7.5f),
                 contentScale = ContentScale.Inside
             )
             Column(modifier = Modifier
