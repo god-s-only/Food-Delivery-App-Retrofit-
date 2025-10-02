@@ -19,14 +19,20 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -54,6 +60,7 @@ fun HomeScreen(navController: NavController,viewModel: HomeViewModel = hiltViewM
                 CategoryList(categories = categories) {
                     navController.navigate("category/${it.id}")
                 }
+                RestaurantList(restaurantList = viewModel.restaurants) { }
             }
 
             HomeScreenEvent.Error -> TODO()
@@ -118,9 +125,25 @@ fun CategoryItem(category: Category, onCategorySelected: (Category) -> Unit) {
 }
 
 @Composable
-fun RestaurantList(restaurant: List<Restaurant>, onRestaurantSelected: (Restaurant) -> Unit) {
+fun RestaurantList(restaurantList: List<Restaurant>, onRestaurantSelected: (Restaurant) -> Unit) {
+    Column {
+        Row {
+            Text(
+                text = "Popular Restaurants",
+                style = Typography.titleMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+            TextButton(onClick = {}) {
+                Text(text = "View All", style = Typography.bodySmall)
+            }
+        }
+    }
+    Spacer(modifier = Modifier.size(16.dp))
     LazyRow {
-        items(restaurant){
+        items(restaurantList){ restaurant ->
+            RestaurantItem(restaurant) {
+                onRestaurantSelected(restaurant)
+            }
 
         }
     }
@@ -133,6 +156,27 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
         .height(76.dp)
         .clip(RoundedCornerShape(16.dp))
     ){
+        Row(modifier = Modifier
+            .align(TopStart)
+            .clip(RoundedCornerShape(32.dp))
+            .background(Color.White)
+            .padding(horizontal = 16.dp, vertical = 8.dp)) {
+            Text(
+                text = "4.5",
+                style = Typography.bodySmall,
+                color = Color.White,
+                modifier = Modifier
+                    .background(Color.Black)
+                    .padding(4.dp)
+                    .clip(RoundedCornerShape(4.dp))
+            )
+            Spacer(modifier = Modifier.size(4.dp))
+            Image(
+                imageVector = Icons.Filled.Star,
+                contentDescription = null,
+                modifier = Modifier.size(12.dp),
+                colorFilter = ColorFilter.tint(Color.Yellow))
+        }
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -159,7 +203,7 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.id.delivery),
+                            painter = painterResource(id = R.drawable.delivery),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(8.dp)
@@ -175,7 +219,7 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.id.time),
+                            painter = painterResource(id = R.drawable.time),
                             contentDescription = null,
                             modifier = Modifier
                                 .padding(8.dp)
@@ -189,6 +233,5 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                 }
             }
         }
-
     }
 }
